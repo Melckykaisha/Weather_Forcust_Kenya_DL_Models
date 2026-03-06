@@ -82,8 +82,8 @@ kenya-weather-forecast/
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/Melckykaisha/Weather_Forcust_Kenya_DL_Models.git
-cd kenya-weather-forecast
+git clone https://github.com/Melckykaisha/Weather_Forcust_Kenya_DL_Models
+cd Kenya_weather_forcust_DL
 ```
 
 ### 2. Install dependencies
