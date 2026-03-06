@@ -272,7 +272,7 @@ with st.sidebar:
     st.markdown("**Horizon:** 7 Days")
     st.markdown("**Variables:** Temp · Rain · Humidity · Wind · Pressure")
     st.markdown("---")
-    st.caption("Victor Cheruiyot · CT204/109420/22  \nMeru University of Science & Technology  \nBSc Data Science, 2026")
+    st.caption("Meru University of Science & Technology  \nBSc Data Science, 2026")
 
 
 # ── Load data ─────────────────────────────────────────────────────────────────
