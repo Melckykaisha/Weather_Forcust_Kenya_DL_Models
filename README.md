@@ -1,221 +1,215 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/Dharura-AI-red?style=for-the-badge&logo=mapbox&logoColor=white" alt="Dharura AI" />
-</p>
+# 🌦️ Kenya Local Weather Forecasting System
 
-<h1 align="center">🚨 Dharura AI</h1>
-
-<p align="center">
-  <strong>Real-time AI-powered emergency intelligence system for Kenya.</strong><br/>
-  <em>"Dharura" means <strong>Emergency</strong> in Swahili.</em>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/NestJS-E0234E?style=flat&logo=nestjs&logoColor=white" />
-  <img src="https://img.shields.io/badge/Next.js-000000?style=flat&logo=nextdotjs&logoColor=white" />
-  <img src="https://img.shields.io/badge/Prisma-2D3748?style=flat&logo=prisma&logoColor=white" />
-  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=flat&logo=supabase&logoColor=white" />
-  <img src="https://img.shields.io/badge/Socket.io-010101?style=flat&logo=socketdotio&logoColor=white" />
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" />
-</p>
+A deep learning-based weather forecasting system that predicts local weather conditions across all **47 counties in Kenya** using historical meteorological data. Built with LSTM, GRU, and ConvLSTM neural networks and deployed as an interactive Streamlit web application.
 
 ---
 
-## 📖 Overview
+## 📌 Overview
 
-Dharura AI transforms citizens into **geo-sensors** — enabling anyone to drop a geotagged emergency pin on a live map, describe the incident, and have it instantly classified by an AI risk engine. Severity alerts are then dispatched in real-time to a responder command center via WebSockets.
-
-Built for the unique emergency response landscape of Kenya, Dharura AI bridges the gap between citizens witnessing emergencies and first responders who need actionable, prioritized intelligence.
+Kenya's diverse geography — from coastal plains to central highlands and arid semi-arid lands (ASALs) — creates complex microclimates that are poorly served by broad national forecasts. This system addresses that gap by training deep learning models on 10 years of historical weather data to generate **county-level, 7-day forecasts** for temperature, rainfall, humidity, wind speed, and atmospheric pressure.
 
 ---
 
-## ✨ Features
+## 🚀 Live Demo
 
-- **🗺️ Interactive Live Map** — React-Leaflet powered map centered on Kenya with real-time incident pins
-- **🤖 AI Risk Engine** — Scores emergencies based on keyword triggers, incident type, and spatial-temporal clustering (+15 confidence per nearby event within 2km/10 minutes)
-- **⚡ Real-time WebSocket Dispatch** — Socket.IO gateway broadcasts new reports instantly to all connected responders
-- **🎯 Severity Classification** — Automatically categorizes incidents as `LOW`, `WARNING`, or `CRITICAL`
-- **🧑‍💼 Responder Command Center** — JWT-secured dashboard at `/responder` for acknowledging, routing, and resolving incidents
-- **🌙 Light / Dark Mode** — Full theme support via `next-themes` with glassmorphism UI
-- **🔐 Auth System** — Hand-rolled JWT + Passport + bcrypt authentication for responders
+> **[Launch App →](https://7dayweatherforcustingkenya.streamlit.app/)**  
 
 ---
 
-## 🏗️ Architecture
+## 📸 App Pages
+
+| Page | Description |
+|------|-------------|
+| 🗺️ **Kenya Map** | Interactive map with all 47 county markers. Click any county for a 7-day forecast popup |
+| 📍 **County Forecast** | Select any county to view detailed daily predictions with trend charts |
+| 📊 **Model Comparison** | Side-by-side evaluation of LSTM, GRU, and ConvLSTM using MAE, RMSE, and R² |
+| 📈 **Predicted vs Actual** | Scatter and time-series plots validating model accuracy against real observations |
+
+---
+
+## 🧠 Models
+
+Three deep learning architectures were trained and compared:
+
+| Model | Description |
+|-------|-------------|
+| **LSTM** | Long Short-Term Memory — captures long-range temporal dependencies |
+| **GRU** | Gated Recurrent Unit — faster, lighter alternative to LSTM |
+| **ConvLSTM** | Convolutional LSTM — combines spatial feature extraction with temporal modeling |
+
+**Best performing model: GRU** (lowest RMSE across all variables)
+
+---
+
+## 📊 Predicted Variables
+
+| Variable | Unit |
+|----------|------|
+| Mean Temperature | °C |
+| Rainfall | mm |
+| Relative Humidity | % |
+| Wind Speed | km/h |
+| Atmospheric Pressure | hPa |
+
+- **Input window:** 30 days of historical data  
+- **Forecast horizon:** 7 days ahead  
+- **Coverage:** All 47 Kenya counties  
+
+---
+
+## 🗂️ Project Structure
 
 ```
-Dharura_AI/
-├── backend/          # NestJS API + WebSocket Gateway
-└── frontend/         # Next.js App Router + React-Leaflet Map
+kenya-weather-forecast/
+├── app.py                          # Streamlit application
+├── requirements.txt                # Python dependencies
+├── README.md
+│
+├── kenya_models/
+│   ├── best_model_GRU.keras        # Best trained model
+│   ├── scalers.pkl                 # Per-county MinMax scalers
+│   ├── feature_cols.pkl            # Feature column list
+│   ├── model_metadata.json         # Model config and results
+│   └── model_comparison.csv        # Evaluation metrics table
+│
+└── kenya_weather_data/
+    └── kenya_all_counties.csv      # Historical weather data (2015–2024)
 ```
 
-### Backend — NestJS (Port 3001)
+---
 
-| Module | Description |
+## ⚙️ Installation & Local Setup
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/Melckykaisha/Weather_Forcust_Kenya_DL_Models.git
+cd kenya-weather-forecast
+```
+
+### 2. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run the app
+```bash
+streamlit run app.py
+```
+
+The app will open at `http://localhost:8501`
+
+---
+
+## 📦 Requirements
+
+```
+streamlit>=1.32.0
+tensorflow>=2.15.0
+scikit-learn>=1.3.0
+pandas>=2.0.0
+numpy>=1.24.0
+folium>=0.15.0
+streamlit-folium>=0.18.0
+plotly>=5.18.0
+joblib>=1.3.0
+requests>=2.31.0
+```
+
+---
+
+## 📡 Data Sources
+
+| Source | Variables | Usage |
+|--------|-----------|-------|
+| [Open-Meteo Archive API](https://open-meteo.com/) | Temperature, rainfall, humidity, wind, pressure | Primary training data |
+| ERA5 Reanalysis *(optional supplement)* | Multi-variable atmospheric data | Gap filling |
+| CHIRPS *(optional supplement)* | Satellite rainfall estimates | Rainfall validation |
+
+Data spans **2015–2024** at daily resolution. The app automatically fetches missing days on startup to keep forecasts current.
+
+---
+
+## 🛠️ Methodology
+
+```
+Data Collection          → Open-Meteo API (47 counties × 10 years)
+       ↓
+Preprocessing            → Interpolation, normalization (MinMaxScaler)
+       ↓
+Feature Engineering      → Lag features (1,3,7 days), rolling averages,
+                           cyclical time encodings (sin/cos)
+       ↓
+Sequence Building        → 30-day lookback → 7-day forecast windows
+       ↓
+Model Training           → LSTM, GRU, ConvLSTM (Adam optimizer, MSE loss,
+                           Early stopping, ReduceLROnPlateau)
+       ↓
+Evaluation               → MAE, RMSE, MAPE, R² on held-out test set (15%)
+       ↓
+Deployment               → Streamlit app with interactive Folium map
+```
+
+**Train / Validation / Test split:** 70% / 15% / 15% (chronological)
+
+---
+
+## 📈 Evaluation Metrics
+
+| Metric | Description |
 |--------|-------------|
-| **Auth** | JWT-based authentication with Passport local strategy and bcrypt password hashing |
-| **Reports** | REST API for creating and managing emergency reports, houses the AI Risk Engine |
-| **Events Gateway** | Socket.IO gateway that emits `newReport` events to all connected clients in real-time |
-
-### Frontend — Next.js App Router (Port 3000)
-
-| Component | Description |
-|-----------|-------------|
-| **MapClient** | Dynamically loaded (SSR disabled) Leaflet map with real-time report pins and confidence score popups |
-| **ReportModal** | Citizen-facing incident submission form triggered by clicking anywhere on the map |
-| **Responder Dashboard** | `/responder` — JWT-secured command center for managing and resolving incoming reports |
-
-### Database — Supabase PostgreSQL via Prisma
-
-- Schema migrations via `prisma db push` on port **5432** (direct connection)
-- App runtime connections via **port 6543** (IPv4 Transaction Pooler)
+| **MAE** | Mean Absolute Error — average prediction error |
+| **RMSE** | Root Mean Squared Error — penalises large errors |
+| **MAPE** | Mean Absolute Percentage Error |
+| **R²** | Coefficient of determination — explained variance |
 
 ---
 
-## 🧠 AI Risk Engine
+## 🌍 Kenya Counties Covered
 
-The AI Risk Engine scores each incoming report using a weighted algorithm:
+All 47 counties across Kenya's diverse climate zones:
 
-- **Base score** from incident category (e.g. `FIRE`, `MEDICAL`, `FLOOD`)
-- **Keyword multiplier** — descriptions containing words like `flames`, `burning`, `unconscious`, `collapsed` boost the score
-- **Spatial-temporal clustering** — +15 confidence points for each existing report within **2km** and **10 minutes** of the new report
-
-Final scores map to severity bands:
-
-| Score | Severity |
-|-------|----------|
-| 0–39 | `LOW` |
-| 40–69 | `WARNING` |
-| 70–100 | `CRITICAL` |
-
-> 💡 **Tip:** Submit multiple emergencies at the same location within 10 minutes to watch the AI Confidence Score organically climb to `CRITICAL`!
+| Zone | Counties (examples) |
+|------|---------------------|
+| **Coastal** | Mombasa, Kilifi, Kwale, Lamu, Taita Taveta |
+| **Highland** | Nairobi, Nyeri, Meru, Kiambu, Nakuru, Kericho |
+| **ASAL** | Turkana, Marsabit, Garissa, Wajir, Mandera, Isiolo |
+| **Lake Basin** | Kisumu, Siaya, Homa Bay, Migori, Kisii |
+| **Rift Valley** | Baringo, Laikipia, Narok, Kajiado, Bomet |
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Deployment on Streamlit Cloud
 
-### Prerequisites
+1. Push this repository to GitHub (must be **public**)
+2. Go to [share.streamlit.io](https://share.streamlit.io)
+3. Connect your GitHub account
+4. Select repo → set main file to `app.py` → click **Deploy**
 
-- Node.js v18+
-- npm v9+
-- A Supabase project with PostgreSQL enabled
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/your-username/dharura-ai.git
-cd dharura-ai
-```
-
-### 2. Configure Environment Variables
-
-**Backend** — create `backend/.env`:
-
-```env
-DATABASE_URL="postgresql://USER:PASSWORD@HOST:6543/postgres?pgbouncer=true"
-DIRECT_URL="postgresql://USER:PASSWORD@HOST:5432/postgres"
-JWT_SECRET="your-super-secret-jwt-key"
-PORT=3001
-```
-
-**Frontend** — create `frontend/.env.local`:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:3001
-NEXT_PUBLIC_WS_URL=http://localhost:3001
-```
-
-### 3. Start the Backend
-
-```bash
-cd backend
-npm install
-npx prisma db push
-npm run start:dev
-```
-
-### 4. Start the Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
+> ⚠️ **Note on file size:** If `best_model_GRU.keras` exceeds GitHub's 100MB limit, use [Git LFS](https://git-lfs.com/):  
+> `git lfs track "*.keras"` before pushing.
 
 ---
 
-## 🖥️ Usage
+## 🔄 Auto Data Updates
 
-### Public Map — `http://localhost:3000`
-
-1. The map loads centered on Kenya with dynamic light/dark theme support
-2. Click anywhere on the map to open the incident report modal
-3. Select a category (e.g. `FIRE`, `MEDICAL`, `FLOOD`, `SECURITY`) and describe the incident
-4. Submit — your pin appears on the map instantly for all connected users
-
-### Responder Command Center — `http://localhost:3000/responder`
-
-1. Register a responder account via the API:
-   ```bash
-   POST http://localhost:3001/auth/register
-   { "email": "responder@dharura.ke", "password": "securepassword" }
-   ```
-2. Log in through the dashboard UI
-3. View incoming reports sorted by severity and AI confidence score
-4. Update report status: `PENDING` → `ACKNOWLEDGED` → `EN_ROUTE` → `RESOLVED`
+The app automatically detects if the dataset is behind today's date and fetches the missing days from Open-Meteo on startup. Results are cached for 24 hours (`ttl=86400`) so the app stays responsive during a session.
 
 ---
 
-## 🛠️ Tech Stack
+## 📚 Key References
 
-| Layer | Technology |
-|-------|-----------|
-| Backend Framework | NestJS with TypeScript |
-| Real-time | Socket.IO Gateway |
-| Authentication | Passport.js + JWT + bcrypt |
-| ORM | Prisma v5 |
-| Database | Supabase PostgreSQL |
-| Frontend Framework | Next.js 15 (App Router) |
-| Map | React-Leaflet |
-| Styling | Tailwind CSS v4 + Glassmorphism |
-| Theming | next-themes |
-| Font | Poppins (Google Fonts) |
-
----
-
-## 📡 API Reference
-
-### Auth
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/auth/register` | Register a new responder |
-| `POST` | `/auth/login` | Login and receive JWT token |
-
-### Reports
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/reports` | Fetch all reports |
-| `POST` | `/reports` | Submit a new emergency report |
-| `PATCH` | `/reports/:id/status` | Update report status (auth required) |
-
-### WebSocket Events
-
-| Event | Direction | Payload |
-|-------|-----------|---------|
-| `newReport` | Server → Client | Full report object with AI score |
+- Hochreiter & Schmidhuber (1997) — Long Short-Term Memory
+- Shi et al. (2015) — ConvLSTM for precipitation nowcasting
+- Bauer et al. (2015) — Numerical Weather Prediction
+- Dinku et al. (2018) — Satellite rainfall validation over Africa
+- Sharma et al. (2023) — Weather forecasting using LSTM
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** — see the [LICENSE](../LICENSE) file for details.
+This project is submitted as an academic research project. Code is available for educational and research purposes.
 
 ---
 
-## 👤 Author
-
-**Melckzedek Kaisha**
-
-Built with 🔥 for Kenya's emergency response future.
+*Built with TensorFlow · Streamlit · Folium · Open-Meteo*
